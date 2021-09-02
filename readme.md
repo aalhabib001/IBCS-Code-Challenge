@@ -14,8 +14,7 @@ CRUD Operations for Employee and Departments
 - Spring-Boot
 - PostgreSQL
 - Spring JPA
-- Swagger
-- Jenkins for CI/CD
+- Swagger API Documentation
 - Deployed to AWS
 
 **How to Run**
