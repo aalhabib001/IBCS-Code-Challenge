@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//Class for employee management
 @AllArgsConstructor
 @Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
 
+    //Getting all the list of employee
     public ResponseEntity<BasicApiResponse<List<EmployeeResponse>>> getEmployeeList() {
         List<EmployeeModel> employeeModels = employeeRepository.findAll();
 
@@ -44,7 +46,7 @@ public class EmployeeService {
         }
     }
 
-
+    //Create a new employee
     public ResponseEntity<ApiMessageResponse> addEmployee(EmployeeRequest employeeRequest) {
         Optional<DepartmentModel> departmentModelOptional = departmentRepository.findById(employeeRequest.getDepartmentId());
         if (departmentModelOptional.isPresent()) {
@@ -62,9 +64,10 @@ public class EmployeeService {
         }
     }
 
+    //Edit employee
     public ResponseEntity<ApiMessageResponse> editEmployee(Long employeeId, EmployeeRequest employeeRequest) {
         Optional<EmployeeModel> employeeModelOptional = employeeRepository.findById(employeeId);
-        if (employeeModelOptional.isPresent()) {
+        if (employeeModelOptional.isPresent()) { //null checking
             EmployeeModel employeeModel = employeeModelOptional.get();
 
             Optional<DepartmentModel> departmentModelOptional = departmentRepository.findById(employeeRequest.getDepartmentId());
@@ -89,6 +92,7 @@ public class EmployeeService {
         }
     }
 
+    //Delete employee by id
     public ResponseEntity<ApiMessageResponse> deleteEmployee(Long employeeId) {
         Optional<EmployeeModel> employeeModelOptional = employeeRepository.findById(employeeId);
         if (employeeModelOptional.isPresent()) {
@@ -97,6 +101,24 @@ public class EmployeeService {
             employeeRepository.delete(employeeModel);
 
             return new ResponseEntity<>(new ApiMessageResponse(200, "Employee Delete Successful"), HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Employee found with ID: "
+                    + employeeId);
+        }
+    }
+
+    //Get a single employee by id
+    public ResponseEntity<BasicApiResponse<EmployeeResponse>> getEmployeeById(Long employeeId) {
+        Optional<EmployeeModel> employeeModelOptional = employeeRepository.findById(employeeId);
+        if (employeeModelOptional.isPresent()) {
+            EmployeeModel employeeModel = employeeModelOptional.get();
+
+            EmployeeResponse employeeResponse = new EmployeeResponse(employeeModel.getId(), employeeModel.getCode(),
+                    employeeModel.getName(), employeeModel.getDateOfBirth(), employeeModel.getGender(),
+                    employeeModel.getMobile(), employeeModel.getDepartmentModel().getName());
+
+            return new ResponseEntity<>(new BasicApiResponse<>(200, "Employee Found", employeeResponse),
+                    HttpStatus.OK);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Employee found with ID: "
                     + employeeId);

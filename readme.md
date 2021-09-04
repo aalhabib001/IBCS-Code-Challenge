@@ -2,7 +2,7 @@
 
 **Live Links:**
 
-- [ ] [Live-Documentation-Backend-AWS](http://ec2-54-198-157-200.compute-1.amazonaws.com:8000/swagger-ui.html)
+- [ ] [Live-Documentation-Backend-Heroku](https://ibcs-code-challenge-habib.herokuapp.com/swagger-ui.html)
 
 
 
@@ -15,7 +15,7 @@ CRUD Operations for Employee and Departments
 - PostgreSQL
 - Spring JPA
 - Swagger API Documentation
-- Deployed to AWS
+- Deployed to Heroku
 
 **How to Run**
 

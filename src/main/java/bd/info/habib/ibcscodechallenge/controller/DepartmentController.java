@@ -6,40 +6,47 @@ import bd.info.habib.ibcscodechallenge.dto.response.BasicApiResponse;
 import bd.info.habib.ibcscodechallenge.dto.response.DepartmentResponse;
 import bd.info.habib.ibcscodechallenge.service.DepartmentService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 
+//Controller class for Department management
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
+    //Getting all the list of departments
     @GetMapping
-    public ResponseEntity<BasicApiResponse<List<DepartmentResponse>>> getDepartments(){
+    public ResponseEntity<BasicApiResponse<List<DepartmentResponse>>> getDepartments() {
         return departmentService.getDepartments();
     }
 
+    //Create a new Department
     @PostMapping
-    public ResponseEntity<ApiMessageResponse> createDepartment(@Valid @RequestBody DepartmentRequest departmentRequest){
+    public ResponseEntity<ApiMessageResponse> createDepartment(@Valid @RequestBody DepartmentRequest departmentRequest) {
         return departmentService.createDepartment(departmentRequest);
     }
 
+    //Getting a single department with department ID
+    @GetMapping("/{departmentId}")
+    public ResponseEntity<BasicApiResponse<DepartmentResponse>> getDepartmentById(@PathVariable Long departmentId) {
+        return departmentService.getDepartmentById(departmentId);
+    }
+
+    //Edit Department
     @PutMapping("/{departmentId}")
     public ResponseEntity<ApiMessageResponse> editDepartment(@PathVariable Long departmentId,
-                                                             @RequestBody DepartmentRequest departmentRequest){
+                                                             @Valid @RequestBody DepartmentRequest departmentRequest) {
         return departmentService.editDepartment(departmentId, departmentRequest);
     }
+
+    //Delete Department with ID
     @DeleteMapping("/{departmentId}")
-    public ResponseEntity<ApiMessageResponse> deleteDepartment(@PathVariable Long departmentId){
+    public ResponseEntity<ApiMessageResponse> deleteDepartment(@PathVariable Long departmentId) {
         return departmentService.deleteDepartment(departmentId);
     }
 }
